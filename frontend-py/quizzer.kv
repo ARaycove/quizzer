@@ -1,0 +1,180 @@
+#:import Factory kivy.factory.Factory
+
+<Label>
+    font_name: "fonts/arialuni.ttf"
+<Button>
+    font_name: "fonts/arialuni.ttf"
+<TextInput>
+    font_name: "fonts/arialuni.ttf"
+<HamMenu@Popup>
+    subject_settings:subject_settings
+    settings_section:settings_section
+    auto_dismiss: True # dimisses the popup if you click off of it
+    on_open: root.generate_subject_settings()
+    size_hint_x: .5
+    pos_hint: {'x': 0, 'top':1}
+    title: "Subject Priorities"
+    GridLayout:
+        cols: 1
+        ScrollView:
+            size_hint_y: 10
+            GridLayout:
+                id: subject_settings
+                cols: 2
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            Button:
+                size_hint_y: None
+                height: 40
+                text: "UPDATE"
+                on_press: root.update_subject_settings()
+        BoxLayout:
+            id: settings_section
+            size_hint_y: None
+            height: 40
+            Button:
+                text: "Gear"
+            Button:
+                text: "Stat"
+            Button:
+                text: "Other"
+
+        
+        
+
+<QuestionInterface>
+    # Variable declarations
+    # Header Variables
+
+    ham_menu:ham_menu
+    question_data:question_data
+    stats_feed:stats_feed
+
+    # Main Body Variables
+    question_text:question_text
+    question_media:question_media
+    answer_text:answer_text
+    answer_media:answer_media
+
+    # Scoring and input variables
+    user_input:user_input
+
+    canvas.before:
+        Color:
+            rgba: (0,0,0,1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+        #########################################################
+        GridLayout: # Header Bar with menu
+            cols:3
+            size_hint_y: None
+            height: "60dp"
+            Button: # Ham Menu
+                text:"MENU"
+                size_hint_x: None
+                width: "40dp"
+                id:ham_menu
+                on_release: Factory.HamMenu().open()
+
+            Label: # question properties (ie subject, revision date, etc)
+                text:"This is some metadata about the question"
+                id: question_data
+                text_size: self.width, self.height
+                valign: "top"
+                halign: "left"
+                
+
+            Label: # relevant stats
+                text:"These are some relevant stats"
+                id: stats_feed
+                size_hint_x: None
+                width: self.width
+                text_size: self.width, self.height
+                valign: "top"
+                halign: "left"
+#########################################################
+# Main Body
+        BoxLayout:
+            orientation: "vertical"
+            BoxLayout:
+                size_hint_y: 0.5
+                Label:
+                    text: "This is a question"
+                    id: question_text
+                    text_size: self.size
+                    font_size: "16pt"
+                    valign: "top"
+                    halign: "left"
+                RelativeLayout:
+                    Image:
+                        source: ""
+                        id: question_media
+                        size_hint:1,1
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        allow_stretch: True
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_y: 0.5
+
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_x: 0.2 if answer_media.source else 1
+
+                    ScrollView:
+                        do_scroll_x: False
+                        Label:
+                            id: answer_text
+                            text: ""
+                            text_size: self.width, None
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                            font_size: "16pt"
+                            valign: "top"
+                            halign: "left"
+                RelativeLayout:
+                    size_hint_x: 0.8 if answer_media.source else 0
+                    Image:
+                        source: ""
+                        id: answer_media
+                        size_hint: 1, 1
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        allow_stretch: True
+
+        #########################################################
+        GridLayout: # User Input section
+            cols:2
+            size_hint_y: None
+            height: "80dp"
+            TextInput:
+                multiline:True
+                id:user_input
+                size_hint_y: None
+                height: "80dp"
+            Button:
+                text:"Show"
+                size_hint_x: None
+                size_hint_y: None
+                width: "60dp"
+                height: "80dp"
+                on_press: root.show_answer()
+        #########################################################
+        BoxLayout: # Score Bar
+            size_hint_y: None
+            height: "40dp"
+            Button: # Yes
+                text:"Yes"
+                on_press: root.question_correct()
+            Button: # No
+                text:"No"
+                on_press: root.question_incorrect()
+            Button: # Skip
+                text: "Skip"
+                on_press: root.question_skip()
+
+

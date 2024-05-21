@@ -1,0 +1,38 @@
+# Main Body
+        GridLayout:
+            cols:1
+            BoxLayout:
+                Label:
+                    text:"This is a question"
+                    id: question_text
+                    text_size: self.width, self.height
+                    font_size: "16pt"
+                    valign: "top"
+                    halign: "left"            
+                Image:
+                    source: ""
+                    id: question_media
+                    text_size: self.width, self.height
+                    allow_stretch: True
+                    # keep_ratio: False
+                    valign: "top"
+                    halign: "left"  
+            BoxLayout:
+                Label:
+                    id: answer_text
+                    text: ""
+                    text_size: self.width, None
+                    # size_hint_y: None
+                    height: self.texture_size[1]
+                    font_size: "16pt"
+                    valign: "top"
+                    halign: "left"           
+                Image:
+                    source: ""
+                    id:answer_media
+                    allow_stretch: True
+                    # keep_ratio: False
+                    background_color: (0, 0, 0, 1)
+                    # text_size: self.width, self.height
+                    valign: "top"
+                    halign: "left"  
